@@ -1,0 +1,19 @@
+---
+title: "Test Post"
+author: "Rodrick Mpofu"
+date: "2024-01-31"
+categories: [news, code, analysis]
+image: "image.jpg"
+---
+
+```{r}
+
+#| Warning: False
+library(palmerpenguins)
+library(tidyverse)
+ggplot(data = penguins) +
+  geom_histogram(mapping = aes(x = bill_length_mm))
+
+```
+
+
