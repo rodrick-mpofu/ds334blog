@@ -8,12 +8,44 @@ image: "image.jpg"
 
 ```{r}
 
-#| Warning: False
-library(palmerpenguins)
 library(tidyverse)
-ggplot(data = penguins) +
-  geom_histogram(mapping = aes(x = bill_length_mm))
+library(here)
+
+matches = read_csv(here("data/matches.csv"))
+
+head(matches)
 
 ```
 
+## Introduction
+
+The data is gathered from English Premier League matches from 2023/2024 season. The data contains information about the teams, goals scored, and the match outcome. The data is taken from the [Football Data](https://www.kaggle.com/datasets/mertbayraktar/english-premier-league-matches-20232024-season) website. The data is in CSV format and contains 456 rows and 28 columns. 
+
+I am interested in finding out the following:
+
+- The relationship between goals scored and the possession held by the teams. 
+- The relationship between the formation and possession.
+
+## Primary Visualizations
+
+```{r}
+
+ggplot(matches, aes(x = Poss, y = GF)) +
+  geom_point() +
+  labs(title = "Goals vs Possession",
+       x = "Possession",
+       y = "Goals")
+
+```
+
+```{r}
+
+ggplot(matches, aes(x = Formation, y = Poss)) +
+  geom_boxplot() +
+  labs(title = "Formation vs Possession",
+       x = "Formation",
+       y = "Possession")
+
+
+```
 
