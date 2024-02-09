@@ -1,7 +1,7 @@
 ---
 title: "English Premier League 2023/2024 Season Analysis"
 author: "Rodrick Mpofu"
-date: "2024-01-31"
+date: "2024-02-09"
 categories: [Introduction, Primary Visualization, analysis]
 ---
 
@@ -27,7 +27,7 @@ I am most interested in the following variables:
 -   The number of goals scored by each team
 -   The expected goals (xG) for each team
 
-I am interested in finding out the following questions:
+I am interested in answering the following questions:
 
 -   How does a team's possession percentage correlate with winning matches? Does higher possession always lead to better results?
 -   Relationship between xG (Expected Goals) and actual goals scored (GF): How accurately does xG predict the number of goals scored?
