@@ -1,0 +1,44 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ds334blog",
+    "section": "",
+    "text": "English Premier League 2023/2024 Season Analysis\n\n\n\n\n\n\n\nIntroduction\n\n\nPrimary Visualization\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nJan 31, 2024\n\n\nRodrick Mpofu\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nJan 28, 2024\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "posts/English Premier League Exploration/index.html",
+    "href": "posts/English Premier League Exploration/index.html",
+    "title": "English Premier League 2023/2024 Season Analysis",
+    "section": "",
+    "text": "The data is gathered from English Premier League matches from 2023/2024 season. The data contains information about the teams, goals scored, and the match outcome. The data is taken from the English Premier League 2023/2024 website. The data is in CSV format and contains 456 rows and 28 columns.\nI am most interested in the following variables: - The possession percentage of each team - The Result of the match (Home Win, Away Win, Draw) - The number of goals scored by each team - The expected goals (xG) for each team\nI am interested in finding out the following questions:\n\nHow does a team’s possession percentage correlate with winning matches? Does higher possession always lead to better results?\nRelationship between xG (Expected Goals) and actual goals scored (GF): How accurately does xG predict the number of goals scored?\nEfficiency in front of goal: Which teams are overperforming or underperforming their xG? (Goals scored vs. xG)"
+  },
+  {
+    "objectID": "posts/English Premier League Exploration/index.html#introduction",
+    "href": "posts/English Premier League Exploration/index.html#introduction",
+    "title": "English Premier League 2023/2024 Season Analysis",
+    "section": "",
+    "text": "The data is gathered from English Premier League matches from 2023/2024 season. The data contains information about the teams, goals scored, and the match outcome. The data is taken from the English Premier League 2023/2024 website. The data is in CSV format and contains 456 rows and 28 columns.\nI am most interested in the following variables: - The possession percentage of each team - The Result of the match (Home Win, Away Win, Draw) - The number of goals scored by each team - The expected goals (xG) for each team\nI am interested in finding out the following questions:\n\nHow does a team’s possession percentage correlate with winning matches? Does higher possession always lead to better results?\nRelationship between xG (Expected Goals) and actual goals scored (GF): How accurately does xG predict the number of goals scored?\nEfficiency in front of goal: Which teams are overperforming or underperforming their xG? (Goals scored vs. xG)"
+  },
+  {
+    "objectID": "posts/English Premier League Exploration/index.html#primary-visualizations",
+    "href": "posts/English Premier League Exploration/index.html#primary-visualizations",
+    "title": "English Premier League 2023/2024 Season Analysis",
+    "section": "Primary Visualizations",
+    "text": "Primary Visualizations\n\nggplot(matches, aes(x=Result, y= Poss)) + \n  geom_boxplot() + \n  labs(title = \"Possession Percentage by Match Result\", x = \"Result\", y = \"Possession Percentage\")\n\n\n\n\n\nInterpretation\nThe boxplot shows the distribution of possession percentage for each match result. The median possession percentage is highest for the home win, followed by the draw, and then the away win. This suggests that higher possession percentage is associated with better match results.\n\nggplot(matches, aes(x=xG, y= GF)) + \n  geom_point() + \n  geom_smooth(method = \"lm\", se = FALSE) + \n  labs(title = \"Expected Goals vs Actual Goals\", x = \"Expected Goals\", y = \"Goals Scored\")\n\n`geom_smooth()` using formula = 'y ~ x'\n\n\n\n\n\n\n\nInterpretation\nThe scatter plot shows the relationship between expected goals (xG) and actual goals scored (GF). The line of best fit suggests that there is a positive correlation between xG and GF. This means that teams that have higher xG tend to score more goals.\n\nmatches$Team &lt;- as.factor(matches$Team)\n\navg_g_to_xG_ratio &lt;- matches |&gt; \n  group_by(Team, Date) |&gt;\n  mutate(goals_to_xG_ratio = GF/xG) |&gt;\n  filter(!is.na(goals_to_xG_ratio)) |&gt;\n  ungroup() |&gt;\n  group_by(Team) |&gt;\n  summarise(avg_goals_to_xG_ratio = mean(goals_to_xG_ratio, na.rm = TRUE))\n\n# This will reorder the 'Team' factor based on 'avg_goals_to_xG_ratio'.\navg_g_to_xG_ratio$Team &lt;- \n  fct_reorder(avg_g_to_xG_ratio$Team, avg_g_to_xG_ratio$avg_goals_to_xG_ratio)\n\nggplot(avg_g_to_xG_ratio, aes(x= Team, y= avg_goals_to_xG_ratio, color = Team)) + \n  geom_point() + \n  geom_segment(aes(xend=Team, y=0, yend=avg_goals_to_xG_ratio)) +\n  labs(title = \"Goals Scored vs Expected Goals\", \n       x = \"Team\", y = \"Goals Scored / Expected Goals\") +\n  coord_flip() +\n  theme(legend.position = \"none\")\n\n\n\n\n\n\nInterpretation\nThe lollipop plot shows the ratio of goals scored to expected goals (xG) for each team. The teams are ordered by the average goals to xG ratio. A ratio greater than 1 indicates that a team is overperforming their xG, while a ratio less than 1 indicates that a team is underperforming their xG. The plot shows that some teams are overperforming their xG, while others are underperforming. Most surprising is that the team with the highest ratio is not the team currently leading the league. This suggests that the team leading the league may not be the most efficient in front of goal. Luton Town only promoted to the Premier League this season and are currently leading the league. They have the highest goals to xG ratio, which suggests that they are overperforming their xG."
+  },
+  {
+    "objectID": "posts/English Premier League Exploration/index.html#conclusion",
+    "href": "posts/English Premier League Exploration/index.html#conclusion",
+    "title": "English Premier League 2023/2024 Season Analysis",
+    "section": "Conclusion",
+    "text": "Conclusion\nThe analysis has shown that possession percentage is positively correlated with match results. Teams with higher possession percentages tend to win more matches. The analysis also showed that there is a positive correlation between expected goals (xG) and actual goals scored (GF). This means that teams with higher xG tend to score more goals. The analysis also showed that some teams are overperforming their xG, while others are underperforming. This suggests that some teams are more efficient in front of goal than others. The team leading the league is not the most efficient in front of goal, as they are underperforming their xG. I would like to further investigate the goals to xG ratio for each team in different seasons to see if the efficiency in front of goal is consistent across seasons. I would also like to investigate the relationship between possession percentage and formations to see if certain formations are more effective in controlling possession. I would argue that my visualizations are effective in communicating the relationships between possession percentage, xG, and match results. The boxplot effectively shows the relationship between possession percentage and match results. The scatter plot effectively shows the relationship between xG and GF. The lollipop plot effectively shows the efficiency in front of goal for each team. All the plots are not cluttered and are easy to interpret. There have a low data-ink ratio and are not misleading."
+  },
+  {
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome To My Blog",
+    "section": "",
+    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+  }
+]
