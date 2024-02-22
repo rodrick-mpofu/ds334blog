@@ -1,0 +1,93 @@
+---
+title: "Analysis of 2023 Global Earthquake Data"
+author: "Rodrick Mpofu"
+date: "2024-02-19"
+categories: [Introduction, Primary Visualization, analysis]
+---
+
+# Introduction
+
+
+```{r setup, include=FALSE}
+
+library(tidyverse)
+library(here)
+
+earthquake_df = read_csv(here("data/earthquakes_2023_global.csv"))
+
+head(earthquake_df)
+
+```
+
+
+# Primary Visualization
+
+## Earthquake Magnitude Distribution
+
+```{r}
+
+ggplot(earthquake_df, aes(x = mag)) +
+  geom_histogram(fill = "lightblue", color = "darkblue") +
+  labs(title = "Earthquake Magnitude Distribution",
+       x = "Magnitude",
+       y = "Frequency")
+
+```
+
+
+## Earthquake Magnitude vs Depth
+
+```{r}
+earthquake_df$type <- as.factor(earthquake_df$type)
+```
+
+
+```{r}
+
+earthquake_df |> 
+  filter(type == "earthquake") |> 
+  ggplot(aes(y = mag, x = depth)) +
+  geom_jitter(alpha = 0.5) +
+  geom_smooth(method = "lm", 
+              se = FALSE, 
+              color = "red")
+```
+
+
+## Earthquake Depth vs rms (Root Mean Square)
+
+```{r}
+
+earthquake_df |> 
+  filter(type == "earthquake") |> 
+  ggplot(aes(y = depth, x = rms)) +
+  geom_jitter(alpha = 0.5) +
+  geom_smooth(method = "lm", 
+              se = FALSE, 
+              color = "red") +
+  labs(title = "Earthquake Depth vs rms",
+       x = "rms",
+       y = "Depth")
+
+```
+
+## Geographical Distribution of Earthquakes
+
+```{r}
+library(maps)
+
+world_map <- map_data("world")
+
+ggplot() +
+  geom_polygon(data = world_map, aes(x = long, y = lat, group = group),
+                   fill = "grey", color = "black") +
+  coord_map(projection = "mercator", xlim = c(-180, 180)) +
+   geom_point(data = earthquake_df, 
+              aes(x = longitude, y = latitude, color = mag), alpha = 0.6) +
+  labs(title = "Global Earthquakes 2023",
+                x = "Longitude",
+                y = "Latitude") +
+          theme_minimal() +
+  scale_color_viridis_c(name = "Magnitude")
+
+```

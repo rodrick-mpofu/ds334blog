@@ -1,10 +1,24 @@
 [
   {
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome To My Blog",
+    "section": "",
+    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "ds334blog",
     "section": "",
     "text": "English Premier League 2023/2024 Season Analysis\n\n\n\n\n\n\n\nIntroduction\n\n\nPrimary Visualization\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nFeb 9, 2024\n\n\nRodrick Mpofu\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nJan 28, 2024\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this blog"
   },
   {
     "objectID": "posts/English Premier League Exploration/index.html",
@@ -33,12 +47,5 @@
     "title": "English Premier League 2023/2024 Season Analysis",
     "section": "Conclusion",
     "text": "Conclusion\nThe analysis has shown that possession percentage is positively correlated with match results. Teams with higher possession percentages tend to win more matches. The analysis also showed that there is a positive correlation between expected goals (xG) and actual goals scored (GF). This means that teams with higher xG tend to score more goals. The analysis also showed that some teams are overperforming their xG, while others are underperforming. This suggests that some teams are more efficient in front of goal than others. The team leading the league is not the most efficient in front of goal, as they are underperforming their xG. I would like to further investigate the goals to xG ratio for each team in different seasons to see if the efficiency in front of goal is consistent across seasons. I would also like to investigate the relationship between possession percentage and formations to see if certain formations are more effective in controlling possession. I would argue that my visualizations are effective in communicating the relationships between possession percentage, xG, and match results. The boxplot effectively shows the relationship between possession percentage and match results. The scatter plot effectively shows the relationship between xG and GF. The lollipop plot effectively shows the efficiency in front of goal for each team. All the plots are not cluttered and are easy to interpret. There have a low data-ink ratio and are not misleading."
-  },
-  {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
-    "title": "Welcome To My Blog",
-    "section": "",
-    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
   }
 ]
