@@ -7,11 +7,32 @@
     "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
   },
   {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "ds334blog",
-    "section": "",
-    "text": "English Premier League 2023/2024 Season Analysis\n\n\n\n\n\n\n\nIntroduction\n\n\nPrimary Visualization\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nFeb 9, 2024\n\n\nRodrick Mpofu\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nJan 28, 2024\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
+    "objectID": "posts/2023 Global Earthquake Activity/index.html#earthquake-magnitude-distribution",
+    "href": "posts/2023 Global Earthquake Activity/index.html#earthquake-magnitude-distribution",
+    "title": "Analysis of 2023 Global Earthquake Data",
+    "section": "Earthquake Magnitude Distribution",
+    "text": "Earthquake Magnitude Distribution\n\nggplot(earthquake_df, aes(x = mag)) +\n  geom_histogram(fill = \"lightblue\", color = \"darkblue\") +\n  labs(title = \"Earthquake Magnitude Distribution\",\n       x = \"Magnitude\",\n       y = \"Frequency\")\n\n`stat_bin()` using `bins = 30`. Pick better value with `binwidth`."
+  },
+  {
+    "objectID": "posts/2023 Global Earthquake Activity/index.html#earthquake-magnitude-vs-depth",
+    "href": "posts/2023 Global Earthquake Activity/index.html#earthquake-magnitude-vs-depth",
+    "title": "Analysis of 2023 Global Earthquake Data",
+    "section": "Earthquake Magnitude vs Depth",
+    "text": "Earthquake Magnitude vs Depth\n\nearthquake_df$type &lt;- as.factor(earthquake_df$type)\n\n\nearthquake_df |&gt; \n  filter(type == \"earthquake\") |&gt; \n  ggplot(aes(y = mag, x = depth)) +\n  geom_jitter(alpha = 0.5) +\n  geom_smooth(method = \"lm\", \n              se = FALSE, \n              color = \"red\")\n\n`geom_smooth()` using formula = 'y ~ x'"
+  },
+  {
+    "objectID": "posts/2023 Global Earthquake Activity/index.html#earthquake-depth-vs-rms-root-mean-square",
+    "href": "posts/2023 Global Earthquake Activity/index.html#earthquake-depth-vs-rms-root-mean-square",
+    "title": "Analysis of 2023 Global Earthquake Data",
+    "section": "Earthquake Depth vs rms (Root Mean Square)",
+    "text": "Earthquake Depth vs rms (Root Mean Square)\n\nearthquake_df |&gt; \n  filter(type == \"earthquake\") |&gt; \n  ggplot(aes(y = depth, x = rms)) +\n  geom_jitter(alpha = 0.5) +\n  geom_smooth(method = \"lm\", \n              se = FALSE, \n              color = \"red\") +\n  labs(title = \"Earthquake Depth vs rms\",\n       x = \"rms\",\n       y = \"Depth\")\n\n`geom_smooth()` using formula = 'y ~ x'"
+  },
+  {
+    "objectID": "posts/2023 Global Earthquake Activity/index.html#geographical-distribution-of-earthquakes",
+    "href": "posts/2023 Global Earthquake Activity/index.html#geographical-distribution-of-earthquakes",
+    "title": "Analysis of 2023 Global Earthquake Data",
+    "section": "Geographical Distribution of Earthquakes",
+    "text": "Geographical Distribution of Earthquakes\n\nlibrary(maps)\n\nWarning: package 'maps' was built under R version 4.2.3\n\n\n\nAttaching package: 'maps'\n\n\nThe following object is masked from 'package:purrr':\n\n    map\n\nworld_map &lt;- map_data(\"world\")\n\nggplot() +\n  geom_polygon(data = world_map, aes(x = long, y = lat, group = group),\n                   fill = \"grey\", color = \"black\") +\n  coord_map(projection = \"mercator\", xlim = c(-180, 180)) +\n   geom_point(data = earthquake_df, \n              aes(x = longitude, y = latitude, color = mag), alpha = 0.6) +\n  labs(title = \"Global Earthquakes 2023\",\n                x = \"Longitude\",\n                y = \"Latitude\") +\n          theme_minimal() +\n  scale_color_viridis_c(name = \"Magnitude\")"
   },
   {
     "objectID": "about.html",
@@ -19,6 +40,13 @@
     "title": "About",
     "section": "",
     "text": "About this blog"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ds334blog",
+    "section": "",
+    "text": "Analysis of 2023 Global Earthquake Data\n\n\n\n\n\n\n\nIntroduction\n\n\nPrimary Visualization\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nFeb 19, 2024\n\n\nRodrick Mpofu\n\n\n\n\n\n\n  \n\n\n\n\nEnglish Premier League 2023/2024 Season Analysis\n\n\n\n\n\n\n\nIntroduction\n\n\nPrimary Visualization\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nFeb 9, 2024\n\n\nRodrick Mpofu\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nJan 28, 2024\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "posts/English Premier League Exploration/index.html",

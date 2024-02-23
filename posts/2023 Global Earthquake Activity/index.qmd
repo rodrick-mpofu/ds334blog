@@ -19,6 +19,8 @@ head(earthquake_df)
 
 ```
 
+This is an analysis of the 2023 global earthquake data. The data was obtained from [Earthquakes 2023 Global](https://www.kaggle.com/datasets/mustafakeser4/earthquakes-2023-global/data). The data contains information about the location, magnitude, depth, and other attributes of earthquakes that occurred in 2023. The data is stored in a CSV file and contains 26642 rows and 22 columns. The primary goal of this analysis is to explore the distribution of earthquake magnitudes, the relationship between earthquake magnitudes and depths, and the geographical distribution of earthquakes around the world. 
+
 
 # Primary Visualization
 
@@ -28,48 +30,63 @@ head(earthquake_df)
 
 ggplot(earthquake_df, aes(x = mag)) +
   geom_histogram(fill = "lightblue", color = "darkblue") +
+  geom_freqpoly(color = "darkgreen") +
   labs(title = "Earthquake Magnitude Distribution",
        x = "Magnitude",
        y = "Frequency")
 
 ```
 
+## Intepretation
+
+The histogram above shows the distribution of earthquake magnitudes. The majority of earthquakes have a magnitude between 4 and 5. There are very few earthquakes with a magnitude greater than 7. This is consistent with the fact that most earthquakes are small and go unnoticed by people, while large earthquakes are relatively rare.
+
 
 ## Earthquake Magnitude vs Depth
 
+
 ```{r}
+
 earthquake_df$type <- as.factor(earthquake_df$type)
-```
-
-
-```{r}
 
 earthquake_df |> 
   filter(type == "earthquake") |> 
   ggplot(aes(y = mag, x = depth)) +
-  geom_jitter(alpha = 0.5) +
+  geom_jitter(alpha = 0.1, color = "#a45b9c") +
   geom_smooth(method = "lm", 
               se = FALSE, 
-              color = "red")
+              color = "red") +
+  labs(title = "Earthquake Magnitude vs Depth",
+       x = "Depth",
+       y = "Magnitude") +
+  scale_fill_viridis_c()
 ```
 
+### Intepretation
 
-## Earthquake Depth vs rms (Root Mean Square)
+The scatter plot above shows the relationship between earthquake magnitude and depth. There is a weak positive relationship between earthquake magnitude and depth. This means that larger earthquakes tend to occur at greater depths. However, the relationship is not very strong, and there is a lot of variability in the data. This suggests that depth is not a very good predictor of earthquake magnitude.
+
+
+## Earthquake Magnitude vs rms (Root Mean Square)
 
 ```{r}
 
 earthquake_df |> 
   filter(type == "earthquake") |> 
-  ggplot(aes(y = depth, x = rms)) +
-  geom_jitter(alpha = 0.5) +
+  ggplot(aes(y = mag, x = rms)) +
+  geom_jitter(alpha = 0.5, color = "#a45b9c") +
   geom_smooth(method = "lm", 
               se = FALSE, 
               color = "red") +
-  labs(title = "Earthquake Depth vs rms",
+  labs(title = "Earthquake Magnitude vs rms",
        x = "rms",
-       y = "Depth")
+       y = "Magnitude") 
 
 ```
+
+### Intepretation
+
+The scatter plot above shows the relationship between earthquake magnitude and rms (Root Mean Square). There seems to be a positive relationship between earthquake magnitude and rms. This means that larger earthquakes tend to have higher rms values. However, the relationship is not very strong, and there is a lot of variability in the data. This suggests that rms is not a very good predictor of earthquake magnitude.
 
 ## Geographical Distribution of Earthquakes
 
@@ -84,10 +101,29 @@ ggplot() +
   coord_map(projection = "mercator", xlim = c(-180, 180)) +
    geom_point(data = earthquake_df, 
               aes(x = longitude, y = latitude, color = mag), alpha = 0.6) +
-  labs(title = "Global Earthquakes 2023",
-                x = "Longitude",
-                y = "Latitude") +
-          theme_minimal() +
-  scale_color_viridis_c(name = "Magnitude")
+  labs(title = "Global Earthquakes 2023") +
+  scale_color_viridis_c(name = "Magnitude") +
+theme(plot.title = element_text(hjust=0.5),
+      axis.ticks.x=element_blank(),
+      axis.text.y=element_blank())
 
 ```
+
+### Interpretation
+
+The map above shows the geographical distribution of earthquakes around the world. The color of the points represent the magnitude of the earthquakes with varying intensities. There are many earthquakes in the Pacific Ocean, along the west coast of South America, and in the Himalayas. There are also many earthquakes in the Mediterranean region, the Middle East, and Indonesia. There are relatively few earthquakes in Africa, Australia, and the central part of South America.The earthquakes points seem to be concentrated along the tectonic plate boundaries. This is consistent with the fact that most earthquakes occur along tectonic plate boundaries, where the Earth's crust is under the most stress.
+
+
+## Conclusion
+
+In conclusion, this analysis has provided insights into the distribution of earthquake magnitudes, the relationship between earthquake magnitudes and depths, and the geographical distribution of earthquakes around the world. The majority of earthquakes have a magnitude between 4 and 5, and there are very few earthquakes with a magnitude greater than 7. There is a weak positive relationship between earthquake magnitude and depth, and a weak positive relationship between earthquake magnitude and rms. The geographical distribution of earthquakes is consistent with the fact that most earthquakes occur along tectonic plate boundaries. I would like to further investigate the way the magnitude of earthquakes has changed over time. I would argue that my visualizations are effective in communicating the relationships between magnitude, depth, and geographical distribution of earthquakes. The visualizations are clear, easy to understand, and provide valuable insights into the data due to the use of color, size, and position to represent different attributes of the data. The scatter plot effectively shows the relationship between earthquake magnitude and depth, and the map effectively shows the geographical distribution of earthquakes around the world.All the plots have a low data-ink ratio and are not misleading.
+
+
+
+
+
+
+
+
+
+

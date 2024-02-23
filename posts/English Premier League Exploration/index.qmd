@@ -38,7 +38,8 @@ I am interested in answering the following questions:
 ```{r}
 ggplot(matches, aes(x=Result, y= Poss)) + 
   geom_boxplot() + 
-  labs(title = "Possession Percentage by Match Result", x = "Result", y = "Possession Percentage")
+  labs(title = "Possession Percentage by Match Result", 
+       x = "Result", y = "Possession Percentage")
 ```
 
 ### Interpretation
