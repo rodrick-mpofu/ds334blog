@@ -103,9 +103,10 @@ ggplot() +
               aes(x = longitude, y = latitude, color = mag), alpha = 0.6) +
   labs(title = "Global Earthquakes 2023") +
   scale_color_viridis_c(name = "Magnitude") +
-theme(plot.title = element_text(hjust=0.5),
-      axis.ticks.x=element_blank(),
-      axis.text.y=element_blank())
+theme(plot.title = element_text(size = rel(2)),
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      axis.ticks.y = element_blank())
 
 ```
 
