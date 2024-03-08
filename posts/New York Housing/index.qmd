@@ -75,7 +75,7 @@ ggMarginal(p, type = 'histogram',
 
 ### Interpretation
 
-The scatter plot above shows the relationship between the price of the houses and the square footage of the houses. The x-axis represents the square footage of the houses, while the y-axis represents the price of the houses on a logarithmic scale. There seems to be a positive correlation between property square footage and PRICE, which is expected—larger properties tend to be more expensive. The price is plotted on a logarithmic scale because of a wide range of prices. This scale helps to visualize the relationship more clearly for properties that vary in orders of magnitude in price.
+The scatter plot above shows the relationship between the price of the houses and the square footage of the houses. The x-axis represents the square footage of the houses, while the y-axis represents the price of the houses on a logarithmic scale. There seems to be a positive correlation between property square footage and PRICE, which is expected—larger properties tend to be more expensive. The price is plotted on a logarithmic scale because of a wide range of prices. This scale helps to visualize the relationship more clearly for properties that vary in orders of magnitude in price. The histogram on the top shows the distribution of the square footage of the houses, while the histogram on the right shows the distribution of the price of the houses.
 
 ## Price Distribution by locality
 
