@@ -1,0 +1,215 @@
+---
+title: "New York Housing Analysis"
+author: "Rodrick Mpofu"
+date: "2024-03-04"
+categories: [Introduction, Primary Visualization, analysis]
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(here)
+
+# Load the data
+NY_house_df = read_csv(here("data/NY-House-Dataset.csv"))
+
+head(NY_house_df)
+```
+
+## Introduction
+
+This is a dataset of houses in New York. The dataset contains the following columns:
+
+
+- `PRICE`: The PRICE of the house
+- `BEDS`: The number of bedrooms
+- `BATH`: The number of bathrooms
+- `PROPERTYSQFT`: The square footage of the house
+- `TYPE`: The type of the house
+- `BROKERTITLE`: The title of the broker
+- `LOCALITY`: The LOCALITY of the house
+- `SUBLOCALITY`: The subLOCALITY of the house
+- `LATITUDE`: The latitude of the house
+- `LONGITUDE`: The longitude of the house
+- `STATE`: The state in which the house is located
+- `MAIN_ADDRESS`: The address of the house
+- `STREET_NAME`: The street name of the house
+
+The data is stored in a CSV file and contains 4801 rows and 17 columns. The dataset was obtained from [Kaggle](https://www.kaggle.com/datasets/nelgiriyewithana/new-york-housing-market).
+
+I am most interested in the following columns:
+
+- `PRICE`: The PRICE of the house
+- `PROPERTYSQFT`: The square footage of the house
+- `LOCALITY`: The LOCALITY of the house
+- `SUBLOCALITY`: The subLOCALITY of the house
+- `LATITUDE`: The latitude of the house
+- `LONGITUDE`: The longitude of the house
+- `STATE`: The state in which the house is located
+
+I will use these columns to visualize the distribution of the PRICE of the houses in New York and to identify any patterns or trends in the data. I also plan to look the geographical distribution of the houses in New York with respect to the PRICE of the houses in the different localities.
+
+## Primary Visualization
+
+## PRICE vs Property Square Footage
+
+
+```{r}
+ggplot(NY_house_df, aes(y = PRICE, x = PROPERTYSQFT)) +
+  geom_point() +
+  scale_x_log10() +
+  scale_y_log10() +
+  labs(title = "Property PRICE (Log Scale) vs. Square Footage",
+       x = "Property Square Footage",
+       y = "PRICE of House (Log Scale)")
+
+```
+
+```{r}
+# Load libraries
+library(ggplot2)
+library(ggExtra)
+
+# Load your data
+# df <- read.csv("path_to_your_data.csv")
+
+# Create the scatter plot
+p <- ggplot(data=NY_house_df, aes(x=PROPERTYSQFT, y=PRICE)) + 
+  geom_point() +
+  theme_bw() +
+  scale_y_log10() + # Use this if you want a logarithmic scale for PRICE
+  scale_x_log10() + # Use this if you want a logarithmic scale for square footage
+  labs(x = "Property Square Footage", y = "PRICE (Log Scale)", title = "PRICE vs Property Square Footage")
+
+# Add marginal histograms
+ggMarginal(p, type = 'histogram')
+
+```
+
+
+### Interpretation
+
+The scatter plot above shows the relationship between the PRICE of the houses and the square footage of the houses. The x-axis represents the square footage of the houses, while the y-axis represents the PRICE of the houses on a logarithmic scale. There seems to be a positive correlation between property square footage and PRICE, which is expected—larger properties tend to be more expensive. The PRICE is plotted on a logarithmic scale because of a wide range of PRICEs. This scale helps to visualize the relationship more clearly for properties that vary in orders of magnitude in PRICE.
+
+
+## PRICE Distribution by LOCALITY
+
+```{r}
+library(ggplot2)
+
+NY_house_df$LOCALITY <- as.factor(NY_house_df$LOCALITY)
+
+NY_house_df$LOCALITY <- as.character(NY_house_df$LOCALITY)
+NY_house_df$LOCALITY[NY_house_df$LOCALITY == 'Queens County'] <- 'Queens'
+NY_house_df$LOCALITY[NY_house_df$LOCALITY == 'Bronx County'] <- 'The Bronx'
+NY_house_df$LOCALITY[NY_house_df$LOCALITY == 'Kings County'] <- 'Brooklyn'
+NY_house_df$LOCALITY[NY_house_df$LOCALITY == 'New York County'] <- 'Manhattan'
+NY_house_df$LOCALITY[NY_house_df$LOCALITY == 'Richmond County'] <- 'Staten Island'
+NY_house_df$LOCALITY[NY_house_df$LOCALITY == 'Flatbush'] <- 'Brooklyn'
+NY_house_df$LOCALITY[NY_house_df$LOCALITY == 'United States' & 
+                       NY_house_df$STREET_NAME == 'Kings County'] <- 'Brooklyn'
+NY_house_df$LOCALITY[NY_house_df$LOCALITY == 'United States' & 
+                       NY_house_df$STREET_NAME == 'Richmond County'] <- 'Staten Island'
+NY_house_df$LOCALITY[NY_house_df$LOCALITY == 'United States' & 
+                       NY_house_df$STREET_NAME == 'Queens County'] <- 'Queens'
+NY_house_df$LOCALITY[NY_house_df$LOCALITY == 'United States' & 
+                       NY_house_df$STREET_NAME == 'New York County'] <- 'Manhattan'
+NY_house_df$LOCALITY[NY_house_df$LOCALITY == 'United States' &
+                       NY_house_df$STREET_NAME == 'Bronx County'] <- 'The Bronx'
+NY_house_df$LOCALITY[NY_house_df$LOCALITY == 'United States' &
+                       NY_house_df$STREET_NAME == 'The Bronx'] <- 'The Bronx'
+NY_house_df$LOCALITY[NY_house_df$LOCALITY == 'New York' & 
+                       NY_house_df$SUBLOCALITY == 'Kings County'] <- 'Brooklyn'
+NY_house_df$LOCALITY[NY_house_df$LOCALITY == 'New York' & 
+                       NY_house_df$SUBLOCALITY == 'Richmond County'] <- 'Staten Island'
+NY_house_df$LOCALITY[NY_house_df$LOCALITY == 'New York' & 
+                       NY_house_df$SUBLOCALITY == 'Queens County'] <- 'Queens'
+NY_house_df$LOCALITY[NY_house_df$LOCALITY == 'New York' & 
+                       NY_house_df$SUBLOCALITY == 'New York County'] <- 'Manhattan'
+NY_house_df$LOCALITY[NY_house_df$LOCALITY == 'New York' & 
+                       NY_house_df$SUBLOCALITY == 'Manhattan'] <- 'Manhattan'
+NY_house_df$LOCALITY[NY_house_df$LOCALITY == 'New York' &
+                       NY_house_df$SUBLOCALITY == 'Bronx County'] <- 'The Bronx'
+NY_house_df$LOCALITY[NY_house_df$LOCALITY == 'New York' &
+                       NY_house_df$SUBLOCALITY == 'The Bronx'] <- 'The Bronx'
+NY_house_df$LOCALITY <- as.factor(NY_house_df$LOCALITY)
+
+# Now you can plot again with the corrected localities
+ggplot(NY_house_df, aes(x = LOCALITY, y = PRICE)) + 
+  geom_boxplot(aes(fill =LOCALITY)) +
+  scale_y_log10() + # To maintain the logarithmic scale on the y-axis
+  theme_bw() + # A clean theme, to start with
+  labs(x = "LOCALITY", y = "PRICE of House (Log Scale)", title = "PRICE Distribution by LOCALITY") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) + # Adjust text angle and  justification 
+  scale_color_viridis_d() # A color scale for the localities
+
+```
+
+
+### Interpretation
+
+
+The graph above is a boxplot showing the distribution of property prices across different localities or boroughs of New York City: Brooklyn, Manhattan, Queens, Staten Island, and The Bronx. The y-axis represents the PRICE of the houses on a logarithmic scale, while the x-axis represents the different localities. The boxplot shows the median, quartiles, and the range of the PRICE for each locality. The boxplot shows that Manhattan has the highest median PRICE, followed by Brooklyn and Staten Island. Queens and The Bronx have the lowest median PRICE. The boxplot also shows the presence of outliers in each locality, which are represented by the dots outside the whiskers of the boxplot.
+
+
+## Median Price of different types of houses in different localities
+
+```{r}
+# Use lolliplot to visualize the distribution of the PRICE by state
+
+NY_house_df |>
+  group_by(LOCALITY, TYPE) |>
+  summarise(median_PRICE = median(PRICE)) |>
+  mutate(LOCALITY = fct_reorder(LOCALITY, median_PRICE)) |>
+  ggplot(aes(x = LOCALITY, y = median_PRICE, color = LOCALITY)) +
+  geom_segment(aes(xend = LOCALITY, y = 0, yend = median_PRICE)) +
+  geom_point() +
+  scale_y_log10() +
+  coord_flip() +
+  labs(title = "Median PRICE by LOCALITY",
+       x = "LOCALITY",
+       y = "Median PRICE") +
+  facet_wrap(~TYPE) +
+  theme(axis.title.y = element_blank())
+```
+
+### Interpretation
+
+The graph above is a lolliplot showing the median PRICE of different types of houses in different localities or boroughs of New York City: Brooklyn, Manhattan, Queens, Staten Island, and The Bronx. Each bar in the individual charts represents the median price for that particular type of housing status within each locality. The graph suggests that Manhattan has the highest median property prices across almost all types of housing statuses, while The Bronx and Staten Island often have the lowest.
+
+
+## Geographical distribution of Price
+
+```{r}
+## install.packages("sf")
+library(sf)
+shp <- read_sf(here("data/nybb_24a/nybb.shp")) |>
+  st_transform(st_crs("+proj=longlat"))
+
+
+ggplot(data = shp) +
+  geom_sf() +
+  theme_void()
+```
+
+
+```{r}
+ggplot() +
+  geom_sf(data = shp) +
+  geom_jitter(data = NY_house_df, aes(x = LONGITUDE, 
+                                     y = LATITUDE, color = log(PRICE))) +
+  theme_void() +
+  scale_color_viridis_c(direction = -1, option = "rocket") +
+  labs(title = "Geographical Distribution of Property Prices",
+       color = "Price of House (Log Scale)") +
+  theme(legend.position = "bottom")
+  
+```
+
+
+### Interpretation
+
+The graph above is a map of New York City, showing the different boroughs or localities. The graph displays a geographical heatmap of property prices all over the city. The color intensity of the dots indicates the price level of each property. Warmer colors (oranges and reds) signify higher prices, while lighter colors (yellows) indicate lower prices, as per the logarithmic scale The darkest areas indicate where the most expensive properties are located. It appears that Manhattan (as inferred by the shape of the island) and certain parts of Long Island have the highest property prices.
+
+## Conclusion
+
+The analysis of the New York City property dataset has provided insights into the distribution of property prices across different localities and types of houses. The analysis has shown that Manhattan has the highest median property prices across almost all types of housing statuses, while The Bronx and Staten Island often have the lowest. The geographical distribution of property prices has shown that Manhattan and certain parts of Long Island have the highest property prices. This analysis can be used by real estate investors, property developers, and potential homebuyers to make informed decisions about property investments in New York City. I would like to further investigate the relationship between the price of the house and the number of bedrooms, bathrooms, and the area of the house. I would also like to investigate the relationship between the price of the house and the year it was built. This will help to provide more insights into the factors that influence property prices in New York City. I would argue that my visualizations are effective in communicating the insights from the dataset. The boxplot and lolliplot are effective in showing the distribution of property prices across different localities and types of houses. The geographical heatmap is effective in showing the geographical distribution of property prices across New York City. The visualizations are clear, concise, and easy to understand, and they effectively communicate the insights from the dataset. The color choices and the use of a logarithmic scale in the visualizations are effective in highlighting the differences in property prices across different localities and types of houses.
