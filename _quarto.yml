@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "ds334blog"
+  title: "Data Visualization: Spring 2024"
   navbar:
     right:
       - about.qmd
