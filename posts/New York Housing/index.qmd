@@ -19,7 +19,6 @@ head(NY_house_df)
 
 This is a dataset of houses in New York. The dataset contains the following columns:
 
-
 - `PRICE`: The PRICE of the house
 - `BEDS`: The number of bedrooms
 - `BATH`: The number of bathrooms
@@ -44,57 +43,43 @@ I am most interested in the following columns:
 - `SUBLOCALITY`: The subLOCALITY of the house
 - `LATITUDE`: The latitude of the house
 - `LONGITUDE`: The longitude of the house
-- `STATE`: The state in which the house is located
 
-I will use these columns to visualize the distribution of the PRICE of the houses in New York and to identify any patterns or trends in the data. I also plan to look the geographical distribution of the houses in New York with respect to the PRICE of the houses in the different localities.
+I will use these columns to visualize the distribution of the price of the houses in New York and to identify any patterns or trends in the data. I also plan to look the geographical distribution of the houses in New York with respect to the price of the houses in the different localities or boroughs.
 
 ## Primary Visualization
 
-## PRICE vs Property Square Footage
-
-
-```{r}
-ggplot(NY_house_df, aes(y = PRICE, x = PROPERTYSQFT)) +
-  geom_point() +
-  scale_x_log10() +
-  scale_y_log10() +
-  labs(title = "Property PRICE (Log Scale) vs. Square Footage",
-       x = "Property Square Footage",
-       y = "PRICE of House (Log Scale)")
-
-```
+### Price vs Property Square Footage
 
 ```{r}
-# Load libraries
-library(ggplot2)
 library(ggExtra)
 
-# Load your data
-# df <- read.csv("path_to_your_data.csv")
-
-# Create the scatter plot
 p <- ggplot(data=NY_house_df, aes(x=PROPERTYSQFT, y=PRICE)) + 
-  geom_point() +
+  geom_point(alpha = 0.4, color = "#a45b9c") +
   theme_bw() +
-  scale_y_log10() + # Use this if you want a logarithmic scale for PRICE
-  scale_x_log10() + # Use this if you want a logarithmic scale for square footage
-  labs(x = "Property Square Footage", y = "PRICE (Log Scale)", title = "PRICE vs Property Square Footage")
+  scale_y_log10() + 
+  scale_x_log10() + 
+  labs(x = "Property Square Footage", 
+       y = "Price of House (Log Scale)", 
+       title = "Price vs Property Square Footage") +
+  geom_smooth(method = "lm", 
+              se = FALSE, 
+              color = "red")
 
 # Add marginal histograms
-ggMarginal(p, type = 'histogram')
+ggMarginal(p, type = 'histogram', 
+           col = 'black', size = 2, 
+           fill = 'lightblue')
 
 ```
 
 
 ### Interpretation
 
-The scatter plot above shows the relationship between the PRICE of the houses and the square footage of the houses. The x-axis represents the square footage of the houses, while the y-axis represents the PRICE of the houses on a logarithmic scale. There seems to be a positive correlation between property square footage and PRICE, which is expected—larger properties tend to be more expensive. The PRICE is plotted on a logarithmic scale because of a wide range of PRICEs. This scale helps to visualize the relationship more clearly for properties that vary in orders of magnitude in PRICE.
+The scatter plot above shows the relationship between the price of the houses and the square footage of the houses. The x-axis represents the square footage of the houses, while the y-axis represents the price of the houses on a logarithmic scale. There seems to be a positive correlation between property square footage and PRICE, which is expected—larger properties tend to be more expensive. The price is plotted on a logarithmic scale because of a wide range of prices. This scale helps to visualize the relationship more clearly for properties that vary in orders of magnitude in price.
 
-
-## PRICE Distribution by LOCALITY
+## Price Distribution by locality
 
 ```{r}
-library(ggplot2)
 
 NY_house_df$LOCALITY <- as.factor(NY_house_df$LOCALITY)
 
@@ -133,29 +118,25 @@ NY_house_df$LOCALITY[NY_house_df$LOCALITY == 'New York' &
                        NY_house_df$SUBLOCALITY == 'The Bronx'] <- 'The Bronx'
 NY_house_df$LOCALITY <- as.factor(NY_house_df$LOCALITY)
 
-# Now you can plot again with the corrected localities
 ggplot(NY_house_df, aes(x = LOCALITY, y = PRICE)) + 
   geom_boxplot(aes(fill =LOCALITY)) +
-  scale_y_log10() + # To maintain the logarithmic scale on the y-axis
-  theme_bw() + # A clean theme, to start with
-  labs(x = "LOCALITY", y = "PRICE of House (Log Scale)", title = "PRICE Distribution by LOCALITY") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) + # Adjust text angle and  justification 
-  scale_color_viridis_d() # A color scale for the localities
+  scale_y_log10() + 
+  theme_bw() + 
+  labs(x = "LOCALITY", 
+       y = "PRICE of House (Log Scale)", 
+       title = "PRICE Distribution by LOCALITY") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1)) + 
+  scale_color_viridis_d()
 
 ```
 
-
 ### Interpretation
 
-
-The graph above is a boxplot showing the distribution of property prices across different localities or boroughs of New York City: Brooklyn, Manhattan, Queens, Staten Island, and The Bronx. The y-axis represents the PRICE of the houses on a logarithmic scale, while the x-axis represents the different localities. The boxplot shows the median, quartiles, and the range of the PRICE for each locality. The boxplot shows that Manhattan has the highest median PRICE, followed by Brooklyn and Staten Island. Queens and The Bronx have the lowest median PRICE. The boxplot also shows the presence of outliers in each locality, which are represented by the dots outside the whiskers of the boxplot.
-
+The graph above is a boxplot showing the distribution of property prices across different localities or boroughs of New York City: Brooklyn, Manhattan, Queens, Staten Island, and the Bronx. The y-axis represents the price of the houses on a logarithmic scale, while the x-axis represents the different localities. The boxplot shows the median, quartiles, and the range of the price for each locality. The boxplot shows that Manhattan has the highest median price, followed by Brooklyn and Staten Island. Queens and the Bronx have the lowest median price. The boxplot also shows the presence of outliers in each locality, which are represented by the dots outside the whiskers of the boxplot.
 
 ## Median Price of different types of houses in different localities
 
 ```{r}
-# Use lolliplot to visualize the distribution of the PRICE by state
-
 NY_house_df |>
   group_by(LOCALITY, TYPE) |>
   summarise(median_PRICE = median(PRICE)) |>
@@ -165,16 +146,16 @@ NY_house_df |>
   geom_point() +
   scale_y_log10() +
   coord_flip() +
-  labs(title = "Median PRICE by LOCALITY",
-       x = "LOCALITY",
-       y = "Median PRICE") +
+  labs(title = "Median price by locality and type of house",
+       x = "Locality",
+       y = "Median price of houses (log scale)") +
   facet_wrap(~TYPE) +
   theme(axis.title.y = element_blank())
 ```
 
 ### Interpretation
 
-The graph above is a lolliplot showing the median PRICE of different types of houses in different localities or boroughs of New York City: Brooklyn, Manhattan, Queens, Staten Island, and The Bronx. Each bar in the individual charts represents the median price for that particular type of housing status within each locality. The graph suggests that Manhattan has the highest median property prices across almost all types of housing statuses, while The Bronx and Staten Island often have the lowest.
+The graph above is a lolliplot showing the median price of different types of houses in different localities or boroughs of New York City: Brooklyn, Manhattan, Queens, Staten Island, and the Bronx. Each bar in the individual charts represents the median price for that particular type of housing status within each locality. The graph suggests that Manhattan has the highest median property prices across almost all types of housing statuses, while the Bronx and Staten Island often have the lowest.
 
 
 ## Geographical distribution of Price
@@ -184,17 +165,13 @@ The graph above is a lolliplot showing the median PRICE of different types of ho
 library(sf)
 shp <- read_sf(here("data/nybb_24a/nybb.shp")) |>
   st_transform(st_crs("+proj=longlat"))
-
-
-ggplot(data = shp) +
-  geom_sf() +
-  theme_void()
+ 
 ```
 
 
 ```{r}
-ggplot() +
-  geom_sf(data = shp) +
+ggplot(data = shp) +
+  geom_sf() +
   geom_jitter(data = NY_house_df, aes(x = LONGITUDE, 
                                      y = LATITUDE, color = log(PRICE))) +
   theme_void() +
